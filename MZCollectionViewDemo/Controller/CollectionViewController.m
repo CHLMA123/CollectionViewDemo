@@ -15,8 +15,9 @@
 #import "CellManagerLayout.h"
 
 typedef NS_ENUM(NSInteger, CellStateIndex) {
-    NormalStateIndex,
+    NormalStateIndex = 0,
     DeleteStateIndex,
+    SelectStateIndex,
 };
 
 @interface CollectionViewController ()<UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, CellManagerDelegate>
@@ -36,6 +37,8 @@ typedef NS_ENUM(NSInteger, CellStateIndex) {
 
 @property (nonatomic, strong) CellManagerLayout *flowLayout;
 
+@property (nonatomic, strong) NSMutableArray *deleteArr;
+
 @end
 
 @implementation CollectionViewController
@@ -46,6 +49,7 @@ typedef NS_ENUM(NSInteger, CellStateIndex) {
     // Do any additional setup after loading the view.
     _cellState = NormalStateIndex;
     _rotateAnimationFlag = YES;
+    _deleteArr = [NSMutableArray array];
     [self setupView];
 }
 
@@ -65,12 +69,21 @@ typedef NS_ENUM(NSInteger, CellStateIndex) {
 }
 #pragma mark - Private Methods
 - (void)changeViewDisplay{
+    if (_cellState == NormalStateIndex) {
+        _cellState = SelectStateIndex;
+    }else if (_cellState == SelectStateIndex){
+        _cellState = NormalStateIndex;
+        if (_deleteArr.count >0) {
+            SectionModel *sec = [self.dataSectionArray objectAtIndex:0];
+            [sec.cellArray removeObjectsInArray:_deleteArr];
+            [self.collectionView reloadData];
+        }
+    }
 }
 
 - (void)editButtonPressed:(UIButton *)sender{
     sender.selected = !sender.selected;
     if (_cellState == NormalStateIndex) {
-        
         _cellState = DeleteStateIndex;
         _rotateAnimationFlag = NO;
         //循环遍历整个CollectionView；
@@ -194,14 +207,13 @@ typedef NS_ENUM(NSInteger, CellStateIndex) {
     NorCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"NorCollectionCell" forIndexPath:indexPath];
     SectionModel *tempSectionM = [self.dataSectionArray objectAtIndex:indexPath.section];
     CellModel *tempCellM = [tempSectionM.cellArray objectAtIndex:indexPath.row];
-    cell.imageView.image = [UIImage imageNamed:tempCellM.cellImage];
-    cell.descLabel.text = tempCellM.cellDesc;
+    [cell fillCellWithModel:tempCellM];
     // 设置删除按钮
     // 点击编辑按钮触发事件
     if(_cellState == NormalStateIndex){
         // 正常情况下，所有删除按钮都隐藏；
         cell.deleteButton.hidden = true;
-    }else{
+    }else if(_cellState == DeleteStateIndex){
         // 可删除情况下；
         // 找到某个具体的section；
         SectionModel *section = self.dataSectionArray[indexPath.section];
@@ -211,8 +223,8 @@ typedef NS_ENUM(NSInteger, CellStateIndex) {
         }else{
             cell.deleteButton.hidden = false;
         }
+        [cell.deleteButton addTarget:self action:@selector(deleteCellButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
     }
-    [cell.deleteButton addTarget:self action:@selector(deleteCellButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
     if (!_rotateAnimationFlag) {
         [CustomAnimation vibrateAnimation:cell];
     }else{
@@ -239,13 +251,31 @@ typedef NS_ENUM(NSInteger, CellStateIndex) {
 
 #pragma mark - UICollectionViewDelegate
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
-    
     SectionModel *sec = [self.dataSectionArray objectAtIndex:indexPath.section];
-    if ((indexPath.row == sec.cellArray.count - 1)) {
-        NSLog(@"点击最后一个cell，执行添加操作");
-        [self createNewItemDialog:indexPath];
-    }else{
-        NSLog(@"第%ld个section,点击图片%ld",indexPath.section,indexPath.row);
+    if (_cellState == NormalStateIndex) {
+        if ((indexPath.row == sec.cellArray.count - 1)) {
+            NSLog(@"点击最后一个cell，执行添加操作");
+            [self createNewItemDialog:indexPath];
+        }else{
+            NSLog(@"第%ld个section,点击图片%ld",indexPath.section,indexPath.row);
+        }
+    }else if(_cellState == SelectStateIndex) {
+        if ((indexPath.row == sec.cellArray.count - 1)) {
+            NSLog(@"点击最后一个cell，执行添加操作");
+        }else{
+            NSLog(@"第%ld个section,点击图片%ld",indexPath.section,indexPath.row);
+            self.dataCellArray = sec.cellArray;
+            CellModel *tempCell = self.dataCellArray[indexPath.row];
+            tempCell.cellSelect = !tempCell.cellSelect;
+            [collectionView reloadItemsAtIndexPaths:@[indexPath]];
+            if (tempCell.cellSelect) {
+                [_deleteArr addObject:tempCell];
+            }else{
+                if ([_deleteArr containsObject:tempCell]) {
+                    [_deleteArr removeObject:tempCell];
+                }
+            }
+        }
     }
 //    NSString *message = [[NSString alloc] initWithFormat:@"你点击了第%ld个section，第%ld个cell",(long)indexPath.section,(long)indexPath.row];
 //    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:message preferredStyle:UIAlertControllerStyleAlert];
@@ -256,27 +286,6 @@ typedef NS_ENUM(NSInteger, CellStateIndex) {
 //        //显示提示框后执行的事件；
 //    }];
 }
-
-#pragma mark - UICollectionViewDelegateFlowLayout
-//- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
-//    return CGSizeMake((SCREEN_WIDTH - 80) / 3, (SCREEN_WIDTH - 80) / 3 + 20);
-//}
-//
-//- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section{
-//    return UIEdgeInsetsMake(20, 20, 10, 20);
-//}
-//
-//- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section{
-//    return CGSizeMake(self.collectionView.frame.size.width, 50);
-//}
-//
-//- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section{
-//    return 0;
-//}
-//
-//- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section{
-//    return 20;
-//}
 
 #pragma mark - Setter && Getter
 - (CellManagerLayout *)flowLayout
@@ -331,6 +340,7 @@ typedef NS_ENUM(NSInteger, CellStateIndex) {
                 CellModel *cellModel = [[CellModel alloc] init];
                 cellModel.cellImage = self.cellImageArr[j];
                 cellModel.cellDesc = self.cellDescArr[j];
+                cellModel.cellSelect = NO;
                 [_dataCellArray addObject:cellModel];
             }
             SectionModel *sectionModel = [[SectionModel alloc] init];

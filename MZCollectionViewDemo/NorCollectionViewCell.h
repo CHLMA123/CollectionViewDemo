@@ -7,13 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
-
+@class CellModel;
 @interface NorCollectionViewCell : UICollectionViewCell
-//cell中的图片；
+/**cell中的图片 */
 @property(strong,nonatomic) UIImageView *imageView;
-//cell中的描述文本；
+/**cell中的描述文本 */
 @property(strong,nonatomic) UILabel *descLabel;
-//cell右上角的删除按钮；
-@property(nonatomic,strong)UIButton *deleteButton;
+/**cell右上角的删除按钮 */
+@property(nonatomic,strong) UIButton *deleteButton;
+/**cell选中标识 */
+@property(strong,nonatomic) UIImageView *selectImageView;
 
+- (void)fillCellWithModel:(CellModel *)model;
 @end

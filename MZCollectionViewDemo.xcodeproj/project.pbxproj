@@ -31,6 +31,7 @@
 		36ED2B361EBDAEA7002B4BA0 /* 3.png in Resources */ = {isa = PBXBuildFile; fileRef = 36ED2B351EBDAEA7002B4BA0 /* 3.png */; };
 		36ED2B391EBDB935002B4BA0 /* CustomAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 36ED2B381EBDB935002B4BA0 /* CustomAnimation.m */; };
 		36ED2B3C1EBDBF25002B4BA0 /* CellManagerLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 36ED2B3B1EBDBF25002B4BA0 /* CellManagerLayout.m */; };
+		36ED2B3E1EBDCF1D002B4BA0 /* checkbox_checked@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 36ED2B3D1EBDCF1D002B4BA0 /* checkbox_checked@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -98,6 +99,7 @@
 		36ED2B381EBDB935002B4BA0 /* CustomAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomAnimation.m; sourceTree = "<group>"; };
 		36ED2B3A1EBDBF25002B4BA0 /* CellManagerLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CellManagerLayout.h; sourceTree = "<group>"; };
 		36ED2B3B1EBDBF25002B4BA0 /* CellManagerLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CellManagerLayout.m; sourceTree = "<group>"; };
+		36ED2B3D1EBDCF1D002B4BA0 /* checkbox_checked@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "checkbox_checked@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -211,6 +213,7 @@
 		36ED2B1A1EBD9467002B4BA0 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				36ED2B3D1EBDCF1D002B4BA0 /* checkbox_checked@2x.png */,
 				36ED2B0B1EBD92D3002B4BA0 /* NorCollectionViewCell.h */,
 				36ED2B0C1EBD92D3002B4BA0 /* NorCollectionViewCell.m */,
 				36ED2B171EBD941C002B4BA0 /* CollectionReusableView.h */,
@@ -374,6 +377,7 @@
 				36ED2AE21EBD9220002B4BA0 /* Assets.xcassets in Resources */,
 				36ED2B341EBD9890002B4BA0 /* home.jpg in Resources */,
 				36ED2B301EBD986E002B4BA0 /* 5.png in Resources */,
+				36ED2B3E1EBDCF1D002B4BA0 /* checkbox_checked@2x.png in Resources */,
 				36ED2ADD1EBD9220002B4BA0 /* Main.storyboard in Resources */,
 				36ED2B2A1EBD9843002B4BA0 /* 1.png in Resources */,
 			);

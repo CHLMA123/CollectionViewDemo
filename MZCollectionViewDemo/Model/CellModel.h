@@ -11,8 +11,10 @@
 @interface CellModel : NSObject
 
 //定义cell中的图片；
-@property(nonatomic,strong) NSString *cellImage;
+@property (nonatomic, strong) NSString *cellImage;
 //定义cell中的描述文字；
-@property(nonatomic,strong) NSString *cellDesc;
+@property (nonatomic, strong) NSString *cellDesc;
+//是否是选中状态
+@property (nonatomic, assign) BOOL cellSelect;
 
 @end
