@@ -12,7 +12,7 @@
 /**
  * 更新数据源
  */
-- (void)moveItemAtIndexPath:(NSIndexPath *)fromPath toIndexPath:(NSIndexPath *)toPath;
+- (void)updateItemAtIndexPath:(NSIndexPath *)fromPath toIndexPath:(NSIndexPath *)toPath;
 
 /**
  * 改变编辑状态

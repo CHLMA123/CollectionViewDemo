@@ -82,6 +82,9 @@ typedef NS_ENUM(NSInteger, CellStateIndex) {
 }
 
 - (void)editButtonPressed:(UIButton *)sender{
+    if (!self.dataSectionArray.count) { //如果没有内容为不可编辑
+        return;
+    }
     sender.selected = !sender.selected;
     if (_cellState == NormalStateIndex) {
         _cellState = DeleteStateIndex;
@@ -125,7 +128,7 @@ typedef NS_ENUM(NSInteger, CellStateIndex) {
 - (void)didChangeEditState:(BOOL)inEditState
 {}
 //改变数据源中model的位置
-- (void)moveItemAtIndexPath:(NSIndexPath *)fromPath toIndexPath:(NSIndexPath *)toPath {
+- (void)updateItemAtIndexPath:(NSIndexPath *)fromPath toIndexPath:(NSIndexPath *)toPath {
     if (fromPath.section != toPath.section) {
         return;
     }
