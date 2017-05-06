@@ -1,0 +1,22 @@
+//
+//  MayerPrefixHeader.pch
+//  Example_Category
+//
+//  Created by MCL on 16/9/3.
+//  Copyright © 2016年 MCL. All rights reserved.
+//
+
+#ifndef MayerPrefixHeader_pch
+#define MayerPrefixHeader_pch
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+#ifdef __OBJC__
+#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
+#endif
+
+#import "Macros.h"
+#import "AppDelegate.h"
+
+#endif /* MayerPrefixHeader_pch */
